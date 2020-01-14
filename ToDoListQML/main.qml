@@ -5,19 +5,20 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 
 ApplicationWindow {
+    id: main
     visible: true
-    width: 320
-    height: 640
+    width: 324
+    height: 692
     title: qsTr("Hello World")
 
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
 
-    ListModel{
+    ListModel {
         id: tmodel
         ListElement{
-            text: "Test1"
+            text: "Test1asdd"
         }
         ListElement{
             text: "Test2"
@@ -35,41 +36,43 @@ ApplicationWindow {
             TextField {
                 id: enterField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Enter name")
+                Layout.leftMargin: 1
+                placeholderText: qsTr("  Enter name")
             }
 
             Button {
                 id: addButton
                 text: "Add Item"
+                Layout.rightMargin: 10
              }
         }
 
         ListView
         {
-            id: listView
-            Layout.fillWidth: true
-            Layout.fillHeight: true
             clip: true
             model: tmodel
-            delegate: RowLayout {
-                Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            delegate: RowLayout{
+                anchors.left: parent.left
+                anchors.right: parent.right
 
                 Text {
-                    Layout.fillWidth: true
                     text: model.text
-                    color: "grey"
-                    font.pointSize: 16
+                    font.pointSize: 14
+                    color: "white"
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 10
                 }
 
-                Rectangle{
-                    Layout.alignment: Qt.AlignRight
-                    width: 10
-                    height: 10
-                    color: "blue"
+                Button {
+                    text: "Remove"
+                    Layout.rightMargin: 10
                 }
             }
-
         }
+
     }
 }
 
