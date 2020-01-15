@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 
+import ToDo 1.0
+
 ApplicationWindow {
     id: main
     visible: true
@@ -14,16 +16,6 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
-
-    ListModel {
-        id: tmodel
-        ListElement{
-            text: "Test1asdd"
-        }
-        ListElement{
-            text: "Test2"
-        }
-    }
 
     ColumnLayout
     {
@@ -50,7 +42,7 @@ ApplicationWindow {
         ListView
         {
             clip: true
-            model: tmodel
+            model: ToDoModel{}
             Layout.fillHeight: true
             Layout.fillWidth: true
 
@@ -59,7 +51,7 @@ ApplicationWindow {
                 anchors.right: parent.right
 
                 Text {
-                    text: model.text
+                    text: model.description
                     font.pointSize: 14
                     color: "white"
                     Layout.fillWidth: true

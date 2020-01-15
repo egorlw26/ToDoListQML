@@ -2,12 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QtQuickControls2/QQuickStyle>
 
+#include "todomodel.h"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<ToDoModel>("ToDo", 1, 0, "ToDoModel");
     QQuickStyle::setStyle("Material");
 
     QQmlApplicationEngine engine;
