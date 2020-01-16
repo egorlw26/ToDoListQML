@@ -42,7 +42,9 @@ ApplicationWindow {
         ListView
         {
             clip: true
-            model: ToDoModel{}
+            model: ToDoModel{
+                list: toDoList
+            }
             Layout.fillHeight: true
             Layout.fillWidth: true
 

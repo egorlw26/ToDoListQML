@@ -2,6 +2,7 @@
 #define TODOLIST_H
 
 #include <QObject>
+#include <QVector>
 
 struct ToDoItem
 {
@@ -16,6 +17,8 @@ public:
     explicit ToDoList(QObject *parent = nullptr);
 
     QVector<ToDoItem> items() const;
+
+    bool setItemAt(int index, const ToDoItem &item);
 
 signals:
     void preAddItem();
