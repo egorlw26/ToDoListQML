@@ -1,9 +1,12 @@
+#include <QFile>
+#include <QTextStream>
+
 #include "todolist.h"
 
 ToDoList::ToDoList(QObject *parent) : QObject(parent)
 {
-    m_items.append({QStringLiteral("Test1")});
-    m_items.append({QStringLiteral("Test2")});
+    m_items.append({false, QStringLiteral("Test1")});
+    m_items.append({true, QStringLiteral("Test2")});
 }
 
 QVector<ToDoItem> ToDoList::items() const
@@ -20,22 +23,68 @@ bool ToDoList::setItemAt(int index, const ToDoItem &item)
     return true;
 }
 
-void ToDoList::addItem()
+bool ToDoList::saveList()
+{
+    QString filename = "Save.txt";
+    QFile file(filename);
+    if(file.open(QIODevice::ReadWrite))
+    {
+        QTextStream stream(&file);
+        stream<<m_items.size()<<'\n';
+        for(int i = 0; i<m_items.size(); ++i)
+        {
+            m_items.at(i).itemComplete ? stream << "1 "<<m_items.at(i).itemDescription
+                                                   : stream << "0 "<<m_items.at(i).itemDescription;
+        }
+    }
+    file.close();
+    return true;
+}
+
+bool ToDoList::loadList()
+{
+    m_items.clear();
+
+    QString filename = "Save.txt";
+    QFile file(filename);
+    if(file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        int size;
+        stream>>size;
+        for(int i = 0; i < size; ++i)
+        {
+            QString complete;
+            stream>>complete;
+            QString description;
+            stream>>description;
+            m_items.append({complete == "1", description});
+        }
+    }
+    return true;
+}
+
+void ToDoList::addItem(QString itemDescription)
 {
     emit preAddItem();
 
     ToDoItem item;
-    item.itemDescription = "NewItem";
-    items().push_back(item);
+    item.itemComplete = false;
+    item.itemDescription = itemDescription;
+    m_items.push_back(item);
 
     emit postAddItem();
 }
 
-void ToDoList::removeItem(int index)
+void ToDoList::removeCompletedItems()
 {
-    emit preRemoveItem(index);
+    for(int index = 0; index<m_items.size(); ++index)
+        if(m_items[index].itemComplete == true)
+        {
+            emit preRemoveItem(index);
 
-    m_items.removeAt(index);
+            m_items.removeAt(index);
 
-    emit postRemoveItem();
+            emit postRemoveItem();
+        }
 }

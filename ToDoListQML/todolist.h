@@ -6,6 +6,7 @@
 
 struct ToDoItem
 {
+    bool itemComplete;
     QString itemDescription;
 };
 
@@ -28,8 +29,10 @@ signals:
     void postRemoveItem();
 
 public slots:
-    void addItem();
-    void removeItem(int index);
+    bool saveList();
+    bool loadList();
+    void addItem(QString itemDescription);
+    void removeCompletedItems();
 
 private:
     QVector<ToDoItem> m_items;

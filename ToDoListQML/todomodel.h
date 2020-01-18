@@ -14,7 +14,8 @@ public:
     explicit ToDoModel(QObject *parent = nullptr);
 
     enum {
-        DescriptionRole = Qt::UserRole
+        CompleteRole = Qt::UserRole,
+        DescriptionRole
     };
 
     // Basic functionality:
