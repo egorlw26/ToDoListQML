@@ -33,8 +33,8 @@ bool ToDoList::saveList()
         stream<<m_items.size()<<'\n';
         for(int i = 0; i<m_items.size(); ++i)
         {
-            m_items.at(i).itemComplete ? stream << "1 "<<m_items.at(i).itemDescription
-                                                   : stream << "0 "<<m_items.at(i).itemDescription;
+            m_items.at(i).itemComplete ? stream << "1 "<<m_items.at(i).itemDescription.toUtf8()<<'\n'
+                                                   : stream << "0 "<<m_items.at(i).itemDescription.toUtf8()<<'\n';
         }
     }
     file.close();
@@ -56,9 +56,8 @@ bool ToDoList::loadList()
         {
             QString complete;
             stream>>complete;
-            QString description;
-            stream>>description;
-            m_items.append({complete == "1", description});
+            QString description = stream.readLine();
+            m_items.append({complete == "1", description.mid(1)});
         }
     }
     return true;
@@ -79,12 +78,15 @@ void ToDoList::addItem(QString itemDescription)
 void ToDoList::removeCompletedItems()
 {
     for(int index = 0; index<m_items.size(); ++index)
+    {
         if(m_items[index].itemComplete == true)
         {
             emit preRemoveItem(index);
 
             m_items.removeAt(index);
+            --index;
 
             emit postRemoveItem();
         }
+    }
 }
