@@ -30,6 +30,8 @@ QVariant ToDoModel::data(const QModelIndex &index, int role) const
             return QVariant(item.itemComplete);
         case DescriptionRole:
             return QVariant(item.itemDescription);
+        case DetailsRole:
+            return QVariant(item.itemDetails);
     }
     return QVariant();
 }
@@ -48,6 +50,9 @@ bool ToDoModel::setData(const QModelIndex &index, const QVariant &value, int rol
             break;
         case DescriptionRole:
             item.itemDescription = value.toString();
+            break;
+        case DetailsRole:
+            item.itemDetails = value.toString();
             break;
     }
 
@@ -71,6 +76,7 @@ QHash<int, QByteArray> ToDoModel::roleNames() const
     QHash<int, QByteArray> names;
     names[DescriptionRole] = "description";
     names[CompleteRole] = "complete";
+    names[DetailsRole] = "details";
     return names;
 }
 

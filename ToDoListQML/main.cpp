@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         QStringLiteral("ToDoList should not be created in QML"));
 
     ToDoList toDoList;
-    toDoList.loadList();
+    //toDoList.loadList();
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty(QStringLiteral("toDoList"), &toDoList);

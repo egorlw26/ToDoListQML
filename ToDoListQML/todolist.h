@@ -8,6 +8,7 @@ struct ToDoItem
 {
     bool itemComplete;
     QString itemDescription;
+    QString itemDetails;
 };
 
 class ToDoList : public QObject

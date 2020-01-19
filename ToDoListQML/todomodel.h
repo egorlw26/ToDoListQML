@@ -15,7 +15,8 @@ public:
 
     enum {
         CompleteRole = Qt::UserRole,
-        DescriptionRole
+        DescriptionRole,
+        DetailsRole
     };
 
     // Basic functionality:

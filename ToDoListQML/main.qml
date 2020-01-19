@@ -6,8 +6,9 @@ import QtQuick.Controls.Material 2.12
 
 import ToDo 1.0
 
+
 ApplicationWindow {
-    id: main
+    id: root
     visible: true
     width: maximumHeight
     height: maximumWidth
@@ -15,6 +16,49 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
+    Popup{
+        id: detailsPopup
+        width: parent.width*0.9
+        height: parent.height*0.9
+        anchors.centerIn: parent
+
+        property string detailsText
+
+        modal: true
+        focus: true
+
+        contentItem:  ColumnLayout{
+            anchors.fill: detailsPopup
+            Button{
+                Layout.fillWidth : true
+                onClicked: detailsPopup.close()
+                id: closeButton
+                text: "To List"
+            }
+
+            Label{
+                text: "Details"
+                font.pointSize: 18
+                font.bold: true
+                font.underline: true
+                Layout.alignment: Qt.AlignCenter
+            }
+
+            ScrollView{
+                ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+                ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                TextArea{
+                    id: detailsTextArea
+                    wrapMode: TextArea.WrapAtWordBoundaryOrAnywhere
+                    placeholderText: "Tap to enter"
+                    font.pointSize: 16
+                    onTextChanged: detailsPopup.detailsText = text
+                }
+            }
+        }
+    }
 
     ColumnLayout
     {
@@ -75,6 +119,15 @@ ApplicationWindow {
                     color: "white"
                     Layout.fillWidth: true
                 }
+
+                Button{
+                    Layout.rightMargin: 10
+                    text: "Details"
+                    onClicked: {
+                        detailsPopup.open()
+                        detailsPopup.detailsText = model.details
+                    }
+                }
             }
         }
 
@@ -87,7 +140,5 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.margins: 10
         }
-
-    }
 }
-
+}

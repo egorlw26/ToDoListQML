@@ -5,8 +5,8 @@
 
 ToDoList::ToDoList(QObject *parent) : QObject(parent)
 {
-    m_items.append({false, QStringLiteral("Test1")});
-    m_items.append({true, QStringLiteral("Test2")});
+    m_items.append({false, QStringLiteral("Test1"), QStringLiteral("testDetails")});
+    m_items.append({true, QStringLiteral("Test2"), QStringLiteral("Test2Details, looser")});
 }
 
 QVector<ToDoItem> ToDoList::items() const
@@ -57,7 +57,7 @@ bool ToDoList::loadList()
             QString complete;
             stream>>complete;
             QString description = stream.readLine();
-            m_items.append({complete == "1", description.mid(1)});
+            m_items.append({complete == "1", description.mid(1), ""});
         }
     }
     return true;
@@ -65,6 +65,9 @@ bool ToDoList::loadList()
 
 void ToDoList::addItem(QString itemDescription)
 {
+    if(itemDescription == "")
+        return;
+
     emit preAddItem();
 
     ToDoItem item;
