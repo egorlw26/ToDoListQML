@@ -18,8 +18,8 @@ ApplicationWindow {
 
     Popup{
         id: detailsPopup
-        width: parent.width*0.9
-        height: parent.height*0.9
+        width: parent.width
+        height: parent.height
         anchors.centerIn: parent
 
         property string detailsText
@@ -49,8 +49,9 @@ ApplicationWindow {
                 ScrollBar.vertical.policy: ScrollBar.AsNeeded
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                TextArea{
+                TextArea {
                     id: detailsTextArea
+                    text: detailsPopup.detailsText
                     wrapMode: TextArea.WrapAtWordBoundaryOrAnywhere
                     placeholderText: "Tap to enter"
                     font.pointSize: 16

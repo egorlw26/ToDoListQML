@@ -1,12 +1,13 @@
 #include <QFile>
 #include <QTextStream>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 #include "todolist.h"
 
 ToDoList::ToDoList(QObject *parent) : QObject(parent)
 {
-    m_items.append({false, QStringLiteral("Test1"), QStringLiteral("testDetails")});
-    m_items.append({true, QStringLiteral("Test2"), QStringLiteral("Test2Details, looser")});
 }
 
 QVector<ToDoItem> ToDoList::items() const
@@ -29,13 +30,7 @@ bool ToDoList::saveList()
     QFile file(filename);
     if(file.open(QIODevice::ReadWrite))
     {
-        QTextStream stream(&file);
-        stream<<m_items.size()<<'\n';
-        for(int i = 0; i<m_items.size(); ++i)
-        {
-            m_items.at(i).itemComplete ? stream << "1 "<<m_items.at(i).itemDescription.toUtf8()<<'\n'
-                                                   : stream << "0 "<<m_items.at(i).itemDescription.toUtf8()<<'\n';
-        }
+
     }
     file.close();
     return true;
@@ -49,15 +44,12 @@ bool ToDoList::loadList()
     QFile file(filename);
     if(file.open(QIODevice::ReadOnly))
     {
-        QTextStream stream(&file);
-        int size;
-        stream>>size;
-        for(int i = 0; i < size; ++i)
+        QByteArray saveData = file.readAll();
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(saveData));
+        QJsonArray itemsArr = jsonDoc.object()["items"].toArray();
+        Q_FOREACH(auto item, itemsArr)
         {
-            QString complete;
-            stream>>complete;
-            QString description = stream.readLine();
-            m_items.append({complete == "1", description.mid(1), ""});
+            m_items.push_back({item["completed"].toBool(), QString(item["description"].toString()), QString(item["details"].toString())});
         }
     }
     return true;
@@ -73,6 +65,7 @@ void ToDoList::addItem(QString itemDescription)
     ToDoItem item;
     item.itemComplete = false;
     item.itemDescription = itemDescription;
+    item.itemDetails = "";
     m_items.push_back(item);
 
     emit postAddItem();
