@@ -23,6 +23,7 @@ ApplicationWindow {
         anchors.centerIn: parent
 
         property string detailsText
+        property int detailsNumber
 
         modal: true
         focus: true
@@ -130,6 +131,7 @@ ApplicationWindow {
                     onClicked: {
                         detailsPopup.open()
                         detailsPopup.detailsText = model.details
+                        detailsPopup.detailsNumber = model.index
                     }
                 }
             }
