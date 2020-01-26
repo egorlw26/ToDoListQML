@@ -31,7 +31,10 @@ ApplicationWindow {
             anchors.fill: detailsPopup
             Button{
                 Layout.fillWidth : true
-                onClicked: detailsPopup.close()
+                onClicked: {
+                    toDoList.saveList()
+                    detailsPopup.close()
+                }
                 id: closeButton
                 text: "To List"
             }

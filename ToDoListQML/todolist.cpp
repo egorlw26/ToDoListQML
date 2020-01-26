@@ -30,7 +30,18 @@ bool ToDoList::saveList()
     QFile file(filename);
     if(file.open(QIODevice::ReadWrite))
     {
-
+        QJsonArray itemsArray;
+        Q_FOREACH(const auto& item, m_items)
+        {
+            QJsonObject jsonItem;
+            jsonItem["completed"] = item.itemComplete;
+            jsonItem["description"] = item.itemDescription;
+            jsonItem["details"] = item.itemDetails;
+            itemsArray.push_back(jsonItem);
+        }
+        QJsonObject jsonFile;
+        jsonFile["items"] = itemsArray;
+        file.write(QJsonDocument(jsonFile).toJson(QJsonDocument::Indented));
     }
     file.close();
     return true;
@@ -47,7 +58,7 @@ bool ToDoList::loadList()
         QByteArray saveData = file.readAll();
         QJsonDocument jsonDoc(QJsonDocument::fromJson(saveData));
         QJsonArray itemsArr = jsonDoc.object()["items"].toArray();
-        Q_FOREACH(auto item, itemsArr)
+        Q_FOREACH(const auto& item, itemsArr)
         {
             m_items.push_back({item["completed"].toBool(), QString(item["description"].toString()), QString(item["details"].toString())});
         }
