@@ -24,6 +24,14 @@ bool ToDoList::setItemAt(int index, const ToDoItem &item)
     return true;
 }
 
+bool ToDoList::setItemDetails(int index, const QString &details)
+{
+    if(index < 0 || index >= m_items.size())
+        return false;
+    m_items[index].itemDetails = details;
+    return true;
+}
+
 bool ToDoList::saveList()
 {
     QString filename = "Save.txt";

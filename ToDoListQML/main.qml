@@ -18,11 +18,10 @@ ApplicationWindow {
 
     Popup{
         id: detailsPopup
-        width: parent.width
-        height: parent.height
+        width: parent.width*0.95
+        height: parent.height*0.95
         anchors.centerIn: parent
 
-        property string detailsText
         property int detailsNumber
 
         modal: true
@@ -33,6 +32,7 @@ ApplicationWindow {
             Button{
                 Layout.fillWidth : true
                 onClicked: {
+                    toDoList.setItemDetails(detailsPopup.detailsNumber, detailsTextArea.text)
                     toDoList.saveList()
                     detailsPopup.close()
                 }
@@ -55,11 +55,9 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 TextArea {
                     id: detailsTextArea
-                    text: detailsPopup.detailsText
                     wrapMode: TextArea.WrapAtWordBoundaryOrAnywhere
                     placeholderText: "Tap to enter"
                     font.pointSize: 16
-                    onTextChanged: detailsPopup.detailsText = text
                 }
             }
         }
@@ -130,7 +128,7 @@ ApplicationWindow {
                     text: "Details"
                     onClicked: {
                         detailsPopup.open()
-                        detailsPopup.detailsText = model.details
+                        detailsTextArea.text = model.details
                         detailsPopup.detailsNumber = model.index
                     }
                 }

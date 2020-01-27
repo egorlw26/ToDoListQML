@@ -33,6 +33,7 @@ public slots:
     bool saveList();
     bool loadList();
     void addItem(QString itemDescription);
+    bool setItemDetails(int index, const QString& details);
     void removeCompletedItems();
 
 private:
