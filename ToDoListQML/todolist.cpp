@@ -38,12 +38,13 @@ bool ToDoList::saveList()
     QFile file(filename);
     if(file.open(QIODevice::ReadWrite))
     {
+        file.resize(0);
         QJsonArray itemsArray;
         Q_FOREACH(const auto& item, m_items)
         {
             QJsonObject jsonItem;
-            jsonItem["completed"] = item.itemComplete;
             jsonItem["description"] = item.itemDescription;
+            jsonItem["completed"] = item.itemComplete;
             jsonItem["details"] = item.itemDetails;
             itemsArray.push_back(jsonItem);
         }
